@@ -29,6 +29,37 @@ namespace Tic_TAC_Toe
             else Console.WriteLine("Its computers turn");
         }
 
+        static public void PrintWinner(char winningChar, char userChar)
+        {
+            if (winningChar == userChar)
+            {
+                Console.WriteLine();
+                Console.WriteLine("User won.");
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("Computer won.");
+                Console.WriteLine();
+            }
+
+        }
+
+        static public void PrintDraw ()
+        {
+            Console.WriteLine("It's a Draw");
+        }
+
+        static public void PrintCurrentStandings(int userWins, int computerWins, int draws)
+        {
+            Console.WriteLine();
+            Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++");
+            Console.WriteLine("User wins  Computer wins  draws");
+            Console.WriteLine($"    {userWins}              {computerWins}        {draws}");
+            Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++");
+            Console.WriteLine();
+        }
         static public char XOChoice()
         {
             Console.Write("Please choose whether you want to play as x or o: ");
@@ -122,7 +153,7 @@ namespace Tic_TAC_Toe
                 else break;
 
             }
-            return (x, y);
+            return (x-1, y-1);
         }
     }
 }
