@@ -23,6 +23,12 @@ namespace Tic_TAC_Toe
             Console.WriteLine("This field is full. Please reenter coordinates");
         }
 
+        static public void YouOrComputerTurn(bool usersTurn)
+        {
+            if(usersTurn) Console.WriteLine("Its your turn");
+            else Console.WriteLine("Its computers turn");
+        }
+
         static public char XOChoice()
         {
             Console.Write("Please choose whether you want to play as x or o: ");

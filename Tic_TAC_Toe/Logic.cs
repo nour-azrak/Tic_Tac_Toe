@@ -9,14 +9,20 @@
             char[,] grid = new char[GRID_SIDE_SIZE, GRID_SIDE_SIZE];
             int x, y;
             char xOrO;
+            char xOrOComputer;
 
             UI.Welcome();
             xOrO = UI.XOChoice();
+            if (xOrO == 'x') xOrOComputer = 'o';
+            else xOrOComputer = 'x';
+            bool usersTurn = true;
 
             while (true)
             {
+                usersTurn = true;
+                UI.YouOrComputerTurn(usersTurn);
                 (x, y) = UI.GetCoordinates(xOrO, GRID_SIDE_SIZE);
-                if (FieldIsFull(grid,x-1,y-1))
+                if (FieldIsFull(grid, x - 1, y - 1))
                 {
                     UI.ReEnterCoordinates();
                     continue;
@@ -24,29 +30,32 @@
                 grid[x - 1, y - 1] = xOrO;
                 UI.PrintGrid(GRID_SIDE_SIZE, grid);
 
-                if (CheckWinningRow(grid, GRID_SIDE_SIZE))
-                {
-                    Console.WriteLine("Winning Row");
-                }
+                // Computers turn
+                usersTurn = false;
+                UI.YouOrComputerTurn(usersTurn);
+                (x, y) = FillRandomField(xOrOComputer, grid, GRID_SIDE_SIZE);
+                grid[x, y] = xOrOComputer;
 
-                if (CheckWinningColumn(grid, GRID_SIDE_SIZE))
-                {
-                    Console.WriteLine("Winning Col");
-                }
-
-                if (CheckWinningDiagonals(grid, GRID_SIDE_SIZE))
-                {
-                    Console.WriteLine("Winning Diags");
-                }
             }
 
 
         }
 
-       
+        static (int,int) FillRandomField(char xOrOComputer, char[,] grid, int gridSideSize)
+        {
+            for (int row =0; row < gridSideSize; row++)
+            {
+                for (int col =0; col < gridSideSize; col++)
+                {
+                    if(!FieldIsFull(grid,row,col)) return (row,col);
+                }
+            }
+            Console.WriteLine("all fields are full");
+            return (-1,-1);
+        }
         static bool FieldIsFull(char[,] grid, int row, int col)
         {
-            if (grid[row,col] != '\0') return true;
+            if (grid[row, col] != '\0') return true;
             else return false;
         }
 
@@ -72,6 +81,40 @@
 
         }
 
+        /// <summary>
+        /// Checks if a row has 2 conscutive 'x' or 'o' charachters
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="gridSideSize"></param>
+        /// <returns>number of the row that has 2 conscutive 'x' or 'o' charachters</returns>
+        static bool CheckRowWith2XO(char[,] grid, int gridSideSize, char xOrO, out int cnt)
+        {
+            int[] trackWinningRow = new int[gridSideSize];
+            bool rowIsEqual = true;
+            cnt = 0;
+
+            for (int row = 0; row < gridSideSize; row++)
+            {
+                cnt = 0;
+                for (int col = 0; col < gridSideSize; col++)
+                {
+                    rowIsEqual = true;
+                    trackWinningRow[col] = grid[row, col];
+                    if (trackWinningRow[col] != xOrO)
+                    {
+                        rowIsEqual = false;
+                        cnt = 0;
+                    }
+                    if (rowIsEqual) cnt++;
+                    if (cnt == 2) break;
+                }
+                if (cnt == 2) break;
+            }
+            if (cnt == 2) return true;
+            else return false;
+        }
+
+
 
         static bool CheckWinningColumn(char[,] grid, int gridSideSize)
         {
@@ -95,6 +138,32 @@
 
         }
 
+        static bool CheckColWith2XO(char[,] grid, int gridSideSize, char xOrO, out int cnt)
+        {
+            int[] trackWinningRow = new int[gridSideSize];
+            bool rowIsEqual = true;
+            cnt = 0;
+
+            for (int row = 0; row < gridSideSize; row++)
+            {
+                cnt = 0;
+                for (int col = 0; col < gridSideSize; col++)
+                {
+                    rowIsEqual = true;
+                    trackWinningRow[col] = grid[col, row];
+                    if (trackWinningRow[col] != xOrO)
+                    {
+                        rowIsEqual = false;
+                        cnt = 0;
+                    }
+                    if (rowIsEqual) cnt++;
+                    if (cnt == 2) break;
+                }
+                if (cnt == 2) break;
+            }
+            if (cnt == 2) return true;
+            else return false;
+        }
         static bool CheckWinningDiagonals(char[,] grid, int gridSideSize)
         {
             int[] trackWinningDiagonalOne = new int[gridSideSize];
@@ -132,6 +201,51 @@
             }
 
             return (diagOneIsEqual && diagTwoIsEqual);
+        }
+        static bool CheckDiagsWith2XO(char[,] grid, int gridSideSize, char xOrO, out int cntDiag1, out int cntDiag2)
+        {
+            int[] trackWinningDiagonalOne = new int[gridSideSize];
+            int[] trackWinningDiagonalTwo = new int[gridSideSize];
+
+            bool diagOneIsEqual = false, diagTwoIsEqual = false;
+            cntDiag1 = 0;
+            cntDiag2 = 0;
+
+            for (int row = 0; row < gridSideSize; row++)
+            {
+                for (int col = 0; col < gridSideSize; col++)
+                {
+                    diagOneIsEqual = true;
+                    diagTwoIsEqual = true;
+                    if (col == row)
+                    {
+                        trackWinningDiagonalOne[col] = grid[col, row];
+
+                    }
+                    if (trackWinningDiagonalOne[col] != xOrO)
+                    {
+                        diagOneIsEqual = false;
+                        cntDiag1 = 0;
+                    }
+                    if (col == gridSideSize - 1 - row)
+                    {
+                        trackWinningDiagonalTwo[row] = grid[col, row];
+
+                    }
+                    if (trackWinningDiagonalTwo[col] != xOrO)
+                    {
+                        diagTwoIsEqual = false;
+                        cntDiag2 = 0;
+                    }
+
+                    if (diagOneIsEqual) cntDiag1++;
+                    if (diagTwoIsEqual) cntDiag2++;
+                    if (cntDiag1 == 2 || cntDiag2 == 2) break;
+                }
+                if (cntDiag1 == 2 || cntDiag2 == 2) break;
+            }
+            if (cntDiag1 == 2 || cntDiag2 == 2) return true;
+            else return false;
         }
     }
 }
