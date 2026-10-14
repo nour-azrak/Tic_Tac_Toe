@@ -21,6 +21,7 @@
 
             while (true)
             {
+                //Users turn
                 usersTurn = true;
                 UI.YouOrComputerTurn(usersTurn);
                 (x, y) = UI.GetCoordinates(xOrOUser, GRID_SIDE_SIZE);
@@ -32,14 +33,7 @@
                 grid[x, y] = xOrOUser;
                 UI.PrintGrid(GRID_SIDE_SIZE, grid);
 
-                // Computers turn
-                usersTurn = false;
-                UI.YouOrComputerTurn(usersTurn);
-                (x, y) = FillRandomField(xOrOComputer, grid, GRID_SIDE_SIZE);
-                grid[x, y] = xOrOComputer;
-                UI.PrintGrid(GRID_SIDE_SIZE, grid);
-
-                // TODO: Check winner after every turn
+                // Check winner after every turn
                 if (CheckWinner(grid, GRID_SIDE_SIZE, out winningChar))
                 {
                     if (winningChar == xOrOUser)
@@ -54,6 +48,7 @@
                     }
                     UI.PrintCurrentStandings(userWins, computerWins, drwas);
                     grid = FillFieldWithEmptyChars(grid, GRID_SIDE_SIZE);
+                    continue;
                 }
                 if (GridIsFull(grid, GRID_SIDE_SIZE))
                 {
@@ -61,11 +56,34 @@
                     grid = FillFieldWithEmptyChars(grid, GRID_SIDE_SIZE);
                     drwas++;
                     UI.PrintCurrentStandings(userWins, computerWins, drwas);
+                    continue;
                 }
 
+                // Computers turn
+                usersTurn = false;
+                UI.YouOrComputerTurn(usersTurn);
+                (x, y) = FillRandomField(xOrOComputer, grid, GRID_SIDE_SIZE);
+                grid[x, y] = xOrOComputer;
+                UI.PrintGrid(GRID_SIDE_SIZE, grid);
+
+                // Check winner after every turn
+                if (CheckWinner(grid, GRID_SIDE_SIZE, out winningChar))
+                {
+                    if (winningChar == xOrOUser)
+                    {
+                        UI.PrintWinner(winningChar, xOrOUser);
+                        userWins++;
+                    }
+                    else
+                    {
+                        UI.PrintWinner(winningChar, xOrOUser);
+                        computerWins++;
+                    }
+                    UI.PrintCurrentStandings(userWins, computerWins, drwas);
+                    grid = FillFieldWithEmptyChars(grid, GRID_SIDE_SIZE);
+                    continue;
+                }
             }
-
-
         }
 
         static bool CheckWinner(char[,] grid, int gridSideSize, out char winningChar)
@@ -123,6 +141,7 @@
             for (int row = 0; row < gridSideSize; row++)
             {
                 rowIsEqual = true;
+
                 for (int col = 0; col < gridSideSize; col++)
                 {
                     trackWinningRow[col] = grid[row, col];
