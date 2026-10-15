@@ -33,7 +33,6 @@ namespace Tic_TAC_Toe
                     if (!FieldIsFull(grid[row, col])) return (row, col);
                 }
             }
-            Console.WriteLine("all fields are full");
             return (-1, -1);
         }
         static public bool FieldIsFull(char grid)
