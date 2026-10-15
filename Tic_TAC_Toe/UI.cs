@@ -8,7 +8,7 @@ namespace Tic_TAC_Toe
     {
         const int GRID_FIRST_COORDINATE = 1;
 
-        static public void Welcome()
+        static public void PrintWelcomeMessage()
         {
             Console.WriteLine("Welcome to Tic Tac Toe!");
             Console.WriteLine("The grid consists of 3x3 fields");
@@ -23,7 +23,7 @@ namespace Tic_TAC_Toe
             Console.WriteLine("This field is full. Please reenter coordinates");
         }
 
-        static public void YouOrComputerTurn(bool usersTurn)
+        static public void PrintUserOrComputerTurn(bool usersTurn)
         {
             if(usersTurn) Console.WriteLine("Its your turn");
             else Console.WriteLine("Its computers turn");
@@ -60,7 +60,7 @@ namespace Tic_TAC_Toe
             Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++");
             Console.WriteLine();
         }
-        static public char XOChoice()
+        static public char GetXOChoice()
         {
             Console.Write("Please choose whether you want to play as x or o: ");
             char xOrO;
