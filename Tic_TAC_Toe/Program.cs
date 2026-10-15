@@ -2,10 +2,9 @@
 {
     internal class Program
     {
-        const int FIRST_ARRAY_POSITION = 0;
         static void Main(string[] args)
         {
-            const int GRID_SIDE_SIZE = 3;
+            const int GRID_SIDE_SIZE = Constants.GRID_SIDE_SIZE;
             char[,] grid = new char[GRID_SIDE_SIZE, GRID_SIDE_SIZE];
             int x, y;
             char xOrOUser;

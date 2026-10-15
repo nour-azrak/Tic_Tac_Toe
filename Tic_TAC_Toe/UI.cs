@@ -6,7 +6,7 @@ namespace Tic_TAC_Toe
 {
     internal class UI
     {
-        const int GRID_FIRST_COORDINATE = 1;
+        const int GRID_FIRST_COORDINATE = Constants.GRID_FIRST_COORDINATE;
 
         static public void PrintWelcomeMessage()
         {

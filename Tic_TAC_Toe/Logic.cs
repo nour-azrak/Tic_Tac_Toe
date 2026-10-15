@@ -6,7 +6,7 @@ namespace Tic_TAC_Toe
 {
     internal class Logic
     {
-        const int FIRST_ARRAY_POSITION = 0;
+        const int FIRST_ARRAY_POSITION = Constants.FIRST_ARRAY_POSITION;
         static public bool CheckWinner(char[,] grid, int gridSideSize, out char winningChar)
         {
             return (CheckWinningRow(grid, gridSideSize, out winningChar) || CheckWinningColumn(grid, gridSideSize, out winningChar) || CheckWinningDiagonals(grid, gridSideSize, out winningChar));
